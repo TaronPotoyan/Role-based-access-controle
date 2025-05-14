@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 export function Header({ user }) {  
   const navigate = useNavigate();
-  console.log(user)  
+  
   const handleLogout = () => {
     localStorage.removeItem('user');
-    navigate('/login');
+    navigate('/');
+  };
+
+  const handleViewProfile = () => {
+    navigate(`/profile/${user._id}`);
   };
 
   return (
@@ -23,7 +27,20 @@ export function Header({ user }) {
                 alt="User Avatar"
                 className="user-avatar"
               />
-              <button onClick={handleLogout}>Logout</button>
+              <div className="user-actions">
+                <button 
+                  className="profile-button"
+                  onClick={handleViewProfile}
+                >
+                  View Profile
+                </button>
+                <button 
+                  className="logout-button"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <button onClick={() => navigate('/')}>Login</button>

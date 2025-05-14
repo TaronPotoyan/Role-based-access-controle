@@ -16,6 +16,9 @@ async function GetUser(req,res) {
     await obj_users.GetUser(req,res);
 }
 
+async function DeleteUser(req,res) {
+    await obj_users.deleteUser(req,res)
+}
 
 
 
@@ -23,7 +26,8 @@ export default {
     GetUsers,
     CreateUser,
     SetAdmin,
-    GetUser
+    GetUser,
+    DeleteUser,
 }
 
     

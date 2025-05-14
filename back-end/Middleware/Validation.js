@@ -1,19 +1,18 @@
 function validateEmail(req, res, next) {
+    console.log('valid email' , req.body)
     const email = req.body.email;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
     if (!email || !emailRegex.test(email)) {
         return res.status(400).json({ message: "Invalid email format" });
     }
-    console.log('Email')
-
+    
     next();
 }
 
 function validatePassword(req, res, next) {
     const password = req.body.password;
     
-
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     
     if (!password || !passwordRegex.test(password)) {
