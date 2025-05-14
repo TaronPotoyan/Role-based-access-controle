@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 export function Header({ user }) {  
   const navigate = useNavigate();
-  
+  console.log(user.avatar)
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/');
   };
 
   const handleViewProfile = () => {
-    navigate(`/profile/${user._id}`);
+    navigate('/profile', { state: { name: user.name, email: user.email , avatar : user.avatar , _id : user._id} });
+
   };
 
   return (

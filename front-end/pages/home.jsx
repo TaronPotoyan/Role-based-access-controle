@@ -7,6 +7,8 @@ export default function Homepage() {
   const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem('user'));
 
+  console.log(currentUser)
+
   useEffect(() => {
     if (!currentUser) {
       alert('Please log in');
@@ -58,7 +60,7 @@ export default function Homepage() {
 
   return (
     <>
-      <Header user={currentUser} />
+      <Header user = {currentUser} />
       <div className="homepage-container">
         <h2>All Users</h2>
         {users.length === 0 ? (
