@@ -1,11 +1,12 @@
 button {
     background: linear-gradient(135deg, #4CAF50, #43A047);
-    color: white;
-    padding: 12px;
+    color: rgb(252, 252, 252);
+    padding: 14px;
+    margin: 10px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    width: 100%;
+    width: 30%;
     font-size: 1.1rem;
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);

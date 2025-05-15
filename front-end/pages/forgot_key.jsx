@@ -1,6 +1,6 @@
 import { json } from "body-parser";
 import { useEffect, useState } from "react";
-import { data, useLocation, useParams } from "react-router-dom";
+import { data, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function Forgot_key() {
   const { key } = useParams();  
@@ -9,22 +9,8 @@ export default function Forgot_key() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
+  const navigator = useNavigate();
 
-//   useEffect(() =>{
-//         fetch (`http://localhost:3001/forgot/${key}`,{
-//             method : 'POST',
-//             headers : {
-//                 'Content-Type': 'application/json'
-//             },
-//             body : JSON.stringify({key})
-//         })
-//         .then(json=>json())
-//         .then(data => {
-//             console.log(data)
-//         })
-//         .catch(console.error)
-
-//   },[])
 
 
 
@@ -41,6 +27,7 @@ export default function Forgot_key() {
       const data = await response.json();
       if (response.ok) {
         setMessage('Password has been reset successfully.');
+        navigator('/');
       } else {
         setMessage(data.error || 'Something went wrong.');
       }
