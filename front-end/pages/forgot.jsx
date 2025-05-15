@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    localStorage.setItem('email' , email)
     fetch(`http://localhost:3001/forgot`, {
       method: 'PUT',
       headers: {
@@ -21,7 +21,8 @@ export default function ForgotPassword() {
         if (data.error) {
           throw new Error(data.error);
         }
-        navigate(`/forgot-password/${data.key}`, { state: { email } });
+        console.log(data)
+        
       })
       .catch((error) => {
         console.error(error);

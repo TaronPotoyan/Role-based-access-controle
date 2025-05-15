@@ -18,7 +18,7 @@ export function Header({ user }) {
     <header>
       <nav>
         <div className="logo">
-          <h1>My App</h1>
+          <h1>{user.name}</h1>
         </div>
         <div className="user-info">
           {user ? (

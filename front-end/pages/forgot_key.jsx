@@ -4,13 +4,23 @@ import { data, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function Forgot_key() {
   const { key } = useParams();  
-  const locator = useLocation();
-  const email = locator.state.email;
+  const [email,setEmail] = useState(localStorage.getItem('email') );
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const navigator = useNavigate();
-
+  
+  useEffect(()=>{
+    fetch(`http://localhost:3001/${key}`,{
+        method : 'POST',
+        headers : {'Content-Type': 'application/json'},
+        body : JSON.stringify({ email, password, key }),
+    })
+    .then(json=>json.json())
+    .then(data => {
+      setEmail(data.email);
+    })
+  },[])
 
 
 
@@ -30,7 +40,9 @@ export default function Forgot_key() {
         navigator('/');
       } else {
         setMessage(data.error || 'Something went wrong.');
+        navigator('/');
       }
+      localStorage.clear('email');
     } catch (error) {
       setMessage('Failed to send request. Try again later.');
     }
@@ -47,6 +59,7 @@ export default function Forgot_key() {
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
           readOnly
         />
 

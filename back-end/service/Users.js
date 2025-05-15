@@ -108,9 +108,10 @@ async function GetUser(req, res) {
       
         return res.status(400).json({ message: 'Email and password are required' });
       }
-      console.log('getUser')
+      console.log('getUser');
+
       const user = await User.findOne({ email });
-  
+      console.log(user)
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -118,6 +119,7 @@ async function GetUser(req, res) {
       const isMatch = await bcrypt.compare(password, user.password);
   
       if (!isMatch) {
+        console.log('here')
         return res.status(401).json({ message: 'Invalid password' });
       }
   
