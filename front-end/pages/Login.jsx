@@ -7,6 +7,11 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const handlerForgotpassword = () => {
+      navigate('/forgot-password')
+  }
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -60,7 +65,7 @@ const Login = () => {
             <button
               type="button"
               className="link-button"
-              onClick={() => navigate('/forgot-password')}
+              onClick={handlerForgotpassword}
             >
               Forgot Password?
             </button>

@@ -30,6 +30,9 @@ const user = new mongoose.Schema({
     reset : {
         type : Boolean,
         default : false
+    },key : {
+        type : String,
+        default : null
     }
 });
 

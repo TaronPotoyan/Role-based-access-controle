@@ -22,7 +22,6 @@ async function Get_Users(req, res) {
 
 async function CreateUser(req, res) {
   try {
-     console.log('Creat')
      console.log(req.body)
     const { name, password, email, avatar  } = req.body;
 
@@ -32,7 +31,6 @@ async function CreateUser(req, res) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log('exist')
       return res.status(400).json({ message: 'Email is already registered' });
     }
 
