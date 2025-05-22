@@ -24,7 +24,7 @@ export function Header({ user }) {
           {user ? (
             <>
               <img
-                src={user.avatar}
+                  src={ user.avatar ? `http://localhost:3001/api/photos/${user.avatar}` : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'  }
                 alt="User Avatar"
                 className="user-avatar"
               />

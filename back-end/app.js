@@ -5,6 +5,9 @@ import mongoose from 'mongoose';
 import chalk from 'chalk';
 import rout from './router/forgot_pass.js';
 import dotenv from 'dotenv';
+import router_photo from './router/photos.js'
+
+
 dotenv.config();
 
 const PORT = 3001;
@@ -20,6 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/users', rout_users);
 app.use('/admins', rout_users);
 app.use('/forgot',rout);
+app.use('/',router_photo);
+
 
 async function start() {
   try {

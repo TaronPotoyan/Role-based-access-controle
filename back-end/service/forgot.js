@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import User from '../model/User.js';
 import nodemailer from 'nodemailer';
 
+
 function generateKey(length = 5) {
   return crypto.randomBytes(length).toString('hex');
 }
@@ -11,7 +12,6 @@ function generateKey(length = 5) {
 export async function Forgot(req, res) {
   try {
     const { email } = req.body;
-    console.log('Works noGet')
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
@@ -136,7 +136,7 @@ export async function Get(req, res) {
         if (!key) {
           return res.status(400).json({ error: 'Reset key is required' });
         }
-        const user = await User.findOne({ key });
+        const user = await User.findOne({ key , email});
         if (!user) {
           return res.status(404).json({ error: 'User not found or invalid reset key' });
         }

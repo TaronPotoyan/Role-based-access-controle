@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from '../components/header';
 
@@ -77,7 +77,7 @@ export default function Homepage() {
                     className={`user-item ${isAdmin ? 'admin-user' : ''}`}
                   >
                     <img
-                      src={user.avatar}
+                      src={ user.avatar ? `http://localhost:3001/api/photos/${user.avatar}` : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'  }
                       alt={`${user.name}'s avatar`}
                       className="user-avatar"
                     />

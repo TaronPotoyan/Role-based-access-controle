@@ -13,3 +13,4 @@ export async function resetPassword(req,res) {
 export async function Getting(req , res) {
      await Get(req,res);
 }
+

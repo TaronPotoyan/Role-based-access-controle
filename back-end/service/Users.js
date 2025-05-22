@@ -1,4 +1,4 @@
-import { use } from "react";
+import Photo from "../model/photo.js";
 import User from "../model/User.js"; 
 import bcrypt from 'bcrypt';
 
@@ -23,7 +23,7 @@ async function Get_Users(req, res) {
 async function CreateUser(req, res) {
   try {
      console.log(req.body)
-    const { name, password, email, avatar  } = req.body;
+    const { name, password, email  } = req.body;
 
     const { admin } = req.params;
     console.log('Admin:', admin);
@@ -31,19 +31,19 @@ async function CreateUser(req, res) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('theree');
+      
       return res.status(400).json({ message: 'Email is already registered' });
     }
 
 
     const salt = await bcrypt.genSalt(10); 
     const hashedPassword = await bcrypt.hash(password, salt); 
-
     
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      avatar: avatar || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y', 
       Role : admin ? 'admin' : 'user'
     });
 

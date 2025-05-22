@@ -24,8 +24,9 @@ const user = new mongoose.Schema({
         default : 'user',
     },
     avatar : {
-        type : String,
-        default : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Photo',
+        required : false
     },
     reset : {
         type : Boolean,
