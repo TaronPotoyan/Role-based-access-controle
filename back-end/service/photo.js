@@ -1,37 +1,70 @@
 import multer from 'multer';
 import Photo from '../model/photo.js';
 import User from '../model/User.js';
+import path from 'path';
+import fs from 'fs';
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (!fs.existsSync('uploads')) {
+      fs.mkdirSync('uploads');
+    }
+    cb(null, 'uploads/'); 
+  },
+  filename: function (req, file, cb) {
+    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
+    cb(null, uniqueName);
+  }
+});
 
 
-const upload = multer({ storage });
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    if (mimetype && extname) return cb(null, true);
+    cb(new Error('Only image files are allowed!'));
+  }
+});
 
 async function Post_Photo(req, res) {
   try {
     if (!req.file) return res.status(400).send('No file uploaded');
-    console.log(req.body);
     
     const photo = new Photo({
-      data: req.file.buffer,
-      contentType: req.file.mimetype
+      path: req.file.path, 
+      contentType: req.file.mimetype,
+      filename: req.file.filename
     });
 
-
     const user = await User.findById(req.body._id);     
-    console.log('user', user);
-
     if (!user) {
+      fs.unlinkSync(req.file.path);
       return res.status(404).json({ message: 'User not found' });
     }
     
-    user.avatar = photo;
-    const saved = await photo.save();
-    await user.save();
-    console.log(user);
+    if (user.avatar) {
+      const oldPhoto = await Photo.findById(user.avatar);
+      if (oldPhoto && fs.existsSync(oldPhoto.path)) {
+        fs.unlinkSync(oldPhoto.path);
+      }
+      await Photo.findByIdAndDelete(user.avatar);
+    }
     
-    res.json({ url: `/api/photos/${saved._id}` });
+    user.avatar = await photo.save();
+    await user.save();
+    
+    res.json({ 
+      url: `/api/photos/${photo._id}`,
+      filePath: photo.path 
+    });
   } catch (e) {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
     console.error('Error:', e);
     res.status(500).send('Internal Server Error');
   }
@@ -40,11 +73,14 @@ async function Post_Photo(req, res) {
 async function Get_Photo(req, res) {
   try {
     const photo = await Photo.findById(req.params.photo_id);
-    if (!photo) return res.status(404).send('Photo not found');
+    if (!photo || !fs.existsSync(photo.path)) {
+      return res.status(404).send('Photo not found');
+    }
 
     res.set('Content-Type', photo.contentType);
-    res.send(photo.data);
+    res.sendFile(photo.path, { root: '.' });
   } catch (e) {
+    console.error('Error:', e);
     res.status(500).send('Error retrieving image');
   }
 }
